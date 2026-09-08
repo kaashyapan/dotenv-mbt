@@ -9,7 +9,7 @@ test "should not parse unfinished subs" {
       #|BAR={invalid_value}
     ).replace(old="{invalid_value}", new=invalid_value),
   )
-  let parsed : Array[Result[(String, String), ParseBufError]] = Array::new()
+  let parsed : Array[Result[(String, String), ParseBufError]] = Array()
   for ;; {
     match iter.next() {
       Some(line) => parsed.push(line)
@@ -31,7 +31,7 @@ test "should not parse unfinished subs" {
 test "should not allow dot as first char of key" {
   let invalid_key = ".KEY=value"
   let iter = DotenvIter::new(invalid_key)
-  let parsed : Array[Result[(String, String), ParseBufError]] = Array::new()
+  let parsed : Array[Result[(String, String), ParseBufError]] = Array()
   for ;; {
     match iter.next() {
       Some(line) => parsed.push(line)
@@ -48,7 +48,7 @@ test "should not allow dot as first char of key" {
 test "should not parse invalid format" {
   let invalid_fmt = "<><><>"
   let iter = DotenvIter::new(invalid_fmt)
-  let parsed : Array[Result[(String, String), ParseBufError]] = Array::new()
+  let parsed : Array[Result[(String, String), ParseBufError]] = Array()
   for ;; {
     match iter.next() {
       Some(line) => parsed.push(line)
@@ -65,7 +65,7 @@ test "should not parse invalid format" {
 test "should not parse invalid escape" {
   let invalid_esc = ">\\f<"
   let iter = DotenvIter::new("VALUE=\{invalid_esc}")
-  let parsed : Array[Result[(String, String), ParseBufError]] = Array::new()
+  let parsed : Array[Result[(String, String), ParseBufError]] = Array()
   for ;; {
     match iter.next() {
       Some(line) => parsed.push(line)

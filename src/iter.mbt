@@ -7,7 +7,7 @@ priv struct DotenvIter {
 ///|
 fn DotenvIter::new(data : String) -> DotenvIter {
   let cursor = Cursor::new(data)
-  { cursor, substitution_data: @hashmap.new(), }
+  { cursor, substitution_data: @hashmap.HashMap([]), }
 }
 
 ///|
@@ -37,10 +37,10 @@ fn DotenvIter::load(self : DotenvIter) -> EnvMap raise ParseBufError {
 ///|
 fn DotenvIter::load_and_modify(self : DotenvIter) -> EnvMap raise ParseBufError {
   // Not thread-safe
-  let vars = @sys.get_env_vars()
+  let vars = @env.get_env_vars()
   self.internal_load(fn(k, v, map) {
-    if not(vars.contains(k)) {
-      @sys.set_env_var(k, v)
+    if !vars.contains(k) {
+      @env.set_env_var(k, v)
     }
     map.map[k] = v
   })
@@ -51,7 +51,7 @@ fn DotenvIter::load_and_modify_override(
   self : DotenvIter,
 ) -> EnvMap raise ParseBufError {
   self.internal_load(fn(k, v, map) {
-    @sys.set_env_var(k, v)
+    @env.set_env_var(k, v)
     map.map[k] = v
   })
 }
