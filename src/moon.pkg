@@ -1,4 +1,13 @@
 import {
   "moonbitlang/x/fs",
-  "moonbitlang/x/sys",
+  "moonbitlang/core/env",
+  "moonbitlang/core/hashmap",
 }
+
+import {
+  "moonbitlang/core/env",
+} for "test"
+
+import {
+  "moonbitlang/core/env",
+} for "wbtest"

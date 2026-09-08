@@ -1,6 +1,6 @@
 name = "ShellWen/dotenv"
 
-version = "0.6.2"
+version = "0.6.3"
 
 import {
   "moonbitlang/x@0.5.1",
