@@ -6,7 +6,7 @@ struct EnvMap {
 
 ///|
 fn EnvMap::new() -> EnvMap {
-  { map: @hashmap.new() }
+  { map: @hashmap.new(), }
 }
 
 ///|
@@ -27,7 +27,7 @@ pub(all) enum EnvSequence {
 }
 
 ///|
-pub impl Default for EnvSequence with default() {
+pub impl Default for EnvSequence with fn default() {
   EnvSequence::InputThenEnv
 }
 
@@ -43,12 +43,12 @@ pub fn EnvLoader::from_path(path : String) -> EnvLoader raise DotenvError {
   let str = (try? @fs.read_file_to_string(path))
     .map_err(fn(e) { DotenvError::Io(e, path) })
     .unwrap_or_error()
-  { path: Some(path), str, sequence: EnvSequence::default() }
+  { path: Some(path), str, sequence: EnvSequence::default(), }
 }
 
 ///|
 pub fn EnvLoader::from_string(str : String) -> EnvLoader {
-  { path: None, str, sequence: EnvSequence::default() }
+  { path: None, str, sequence: EnvSequence::default(), }
 }
 
 ///|
@@ -129,12 +129,12 @@ fn env_vars() -> @hashmap.HashMap[String, String] {
 /// This is the primary method for loading environment variables.
 pub fn EnvLoader::load(self : EnvLoader) -> EnvMap raise DotenvError {
   match self.sequence {
-    EnvOnly => { map: env_vars() }
+    EnvOnly => { map: env_vars(), }
     EnvThenInput => {
       let existing = env_vars()
       let input = self.load_input()
       input.map.each(fn(k, v) { existing.set(k, v) })
-      { map: existing }
+      { map: existing, }
     }
     InputOnly => self.load_input()
     InputThenEnv => {
@@ -172,7 +172,7 @@ pub fn EnvLoader::load_and_modify(self : EnvLoader) -> EnvMap raise DotenvError 
       let existing = env_vars()
       let input = self.load_input_and_modify_override()
       input.map.each(fn(k, v) { existing.set(k, v) })
-      { map: existing }
+      { map: existing, }
     }
     EnvOnly => self.load_input_and_modify_override()
     InputThenEnv => {

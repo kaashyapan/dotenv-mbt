@@ -7,7 +7,7 @@ priv struct Cursor {
 
 ///|
 fn Cursor::new(data : String) -> Cursor {
-  { data, pos: 0 }
+  { data, pos: 0, }
 }
 
 ///|
@@ -78,12 +78,12 @@ fn Cursor::set_pos(self : Cursor, pos : UInt64) -> Unit {
 
 ///|
 fn Cursor::next_line(self : Cursor) -> Result[String, ParseBufError]? {
-  for {
+  for ;; {
     let mut buf = ""
     let mut cur_state = ParseState::Complete
     let mut buf_pos : UInt = 0
     let mut cur_pos : UInt = 0
-    for {
+    for ;; {
       buf_pos = buf.length().reinterpret_as_uint()
       let new_line = self.read_line()
       buf = buf + new_line
